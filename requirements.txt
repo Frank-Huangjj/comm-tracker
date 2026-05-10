@@ -1,0 +1,37 @@
+# Network Scraping & Processing
+httpx[http2]>=0.27
+playwright>=1.40
+beautifulsoup4>=4.12
+lxml>=5.0
+
+# Database & Scheduling
+sqlmodel>=0.0.22
+alembic>=1.13
+apscheduler>=3.10,<4.0
+
+# CLI & Configuration
+typer>=0.9
+pydantic>=2.0
+pydantic-settings>=2.0
+pyyaml>=6.0
+python-dotenv>=1.0
+
+# NLP & Text Analysis
+jieba>=0.42
+datasketch>=1.6
+simhash>=2.1
+
+# AI & LLM
+openai>=2.0
+
+# Data Processing & Utilities
+python-dateutil>=2.8
+pdfplumber>=0.10
+openpyxl>=3.1
+jinja2>=3.1
+rich>=13.0
+
+# Dashboard & Visualization
+streamlit>=1.30
+pandas>=2.0
+plotly>=5.10
