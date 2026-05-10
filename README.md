@@ -158,7 +158,6 @@ comm-tracker/
 │   ├── scheduler/             # APScheduler 定时调度
 │   └── utils/
 │       └── http_client.py     # HTTP 客户端（httpx + Playwright）
-├── tests/                     # 单元测试
 ├── data/
 │   ├── db/                    # SQLite 数据库
 │   └── exports/               # 导出文件输出目录
@@ -224,12 +223,6 @@ RawItem → Cleaner → Deduplicator → Classifier → Summarizer → Article
 | `OPENAI_API_KEY` | LLM API Key | 无（禁用 LLM 功能） |
 | `OPENAI_BASE_URL` | LLM API 地址 | `https://api.deepseek.com/v1` |
 | `DATABASE_URL` | 数据库连接串 | `sqlite:///data/db/comm_tracker.db` |
-
-## 测试
-
-```bash
-pytest tests/ -v
-```
 
 ## 项目开发总结
 
