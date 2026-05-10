@@ -42,6 +42,7 @@ class HttpClient:
             timeout=httpx.Timeout(30.0),
             headers=self.ua_rotator.get_headers(),
             http2=True,
+            verify=False,
         )
         return self
 

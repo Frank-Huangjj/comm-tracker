@@ -26,6 +26,9 @@ MANUFACTURER_KEYWORDS: dict[str, list[str]] = {
     "ericsson": ["爱立信", "ericsson"],
     "nokia": ["诺基亚", "nokia"],
     "samsung": ["三星", "samsung"],
+    "china_mobile": ["中国移动", "中移动"],
+    "china_telecom": ["中国电信", "中电信"],
+    "china_unicom": ["中国联通", "中联通"],
 }
 
 # 最多抓取页数
@@ -46,7 +49,7 @@ class C114NewsCollector(BaseCollector):
 
     collector_name = "c114_news"
     source_type = SourceType.NEWS
-    supported_manufacturers = ["huawei", "zte", "ericsson", "nokia", "samsung"]
+    supported_manufacturers = ["huawei", "zte", "ericsson", "nokia", "samsung", "china_mobile", "china_telecom", "china_unicom"]
     needs_js = False
 
     def __init__(self, client: HttpClient | None = None):

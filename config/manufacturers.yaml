@@ -35,3 +35,38 @@ manufacturers:
     stock_codes: ["005930.KS"]
     official_url: "https://www.samsung.com"
     news_url: "https://news.samsung.com"
+
+  - short_code: china_mobile
+    name_zh: "中国移动通信集团有限公司"
+    name_en: "China Mobile"
+    stock_codes: ["600941.SH", "0941.HK"]
+    official_url: "https://www.10086.cn"
+    news_url: "https://www.chinamobile.com/cn/about/news/"
+
+  - short_code: china_telecom
+    name_zh: "中国电信集团有限公司"
+    name_en: "China Telecom"
+    stock_codes: ["601728.SH", "0728.HK"]
+    official_url: "https://www.189.cn"
+    news_url: "http://www.chinatelecom.com.cn/news/"
+
+  - short_code: china_unicom
+    name_zh: "中国联合网络通信集团有限公司"
+    name_en: "China Unicom"
+    stock_codes: ["600050.SH", "0762.HK"]
+    official_url: "https://www.10010.com"
+    news_url: "http://www.chinaunicom.com.cn/news/"
+
+  - short_code: gsma
+    name_zh: "全球移动通信系统协会"
+    name_en: "GSMA"
+    stock_codes: []
+    official_url: "https://www.gsma.com"
+    news_url: "https://www.gsma.com/newsroom/"
+
+  - short_code: tmforum
+    name_zh: "电信管理论坛"
+    name_en: "TM Forum"
+    stock_codes: []
+    official_url: "https://www.tmforum.org"
+    news_url: "https://inform.tmforum.org/"

@@ -32,22 +32,44 @@ sources:
     manufacturers: [samsung]
     enabled: true
 
+  - name: cmcc_news
+    type: official
+    collector_class: ChinaMobileNewsCollector
+    manufacturers: [china_mobile]
+    enabled: true
+
+  - name: ct_news
+    type: official
+    collector_class: ChinaTelecomNewsCollector
+    manufacturers: [china_telecom]
+    enabled: true
+
+  - name: cu_news
+    type: official
+    collector_class: ChinaUnicomNewsCollector
+    manufacturers: [china_unicom]
+    enabled: true
+
+  - name: gsma_news
+    type: official
+    collector_class: GSMANewsCollector
+    manufacturers: [gsma]
+    enabled: true
+
+  - name: tmforum_news
+    type: official
+    collector_class: TMForumNewsCollector
+    manufacturers: [tmforum]
+    enabled: true
+
   # === 行业媒体 ===
   - name: c114_news
     type: news
     collector_class: C114NewsCollector
-    manufacturers: [huawei, zte, ericsson, nokia, samsung]
+    manufacturers: [huawei, zte, ericsson, nokia, samsung, china_mobile, china_telecom, china_unicom]
     enabled: true
     config:
       base_url: "https://www.c114.com.cn/news"
-
-  - name: c114_bbs
-    type: news
-    collector_class: C114BBSCollector
-    manufacturers: [huawei, zte, ericsson, nokia, samsung]
-    enabled: false
-    config:
-      base_url: "https://bbs.c114.net"
 
   # === 社交平台 ===
   - name: wechat_sogou

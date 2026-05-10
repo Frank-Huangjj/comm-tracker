@@ -64,6 +64,12 @@ def main():
 
     # === 总览指标 ===
     st.header("总览")
+    st.caption(f"报告期间: {report['start_date']} ~ {report['end_date']}")
+    
+    repo = get_repo()
+    today_usage = repo.get_token_usage_today()
+    today_total = sum(v for k, v in today_usage.items() if "_" not in k)
+
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
@@ -78,7 +84,7 @@ def main():
     with col3:
         st.metric("摘要覆盖率", f"{overview['summary_coverage']:.1f}%")
     with col4:
-        st.metric("报告期间", f"{report['start_date']} ~ {report['end_date']}")
+        st.metric("今日 Token 用量", f"{today_total:,}")
 
     st.divider()
 
@@ -125,45 +131,33 @@ def main():
     else:
         st.info("暂无趋势数据")
 
-    # 数据源分布 - 水平柱状图
-    col_src, col_kw = st.columns(2)
-
-    with col_src:
-        st.subheader("数据源分布")
-        if report["sources"]:
-            src_df = pd.DataFrame(
-                list(report["sources"].items()), columns=["数据源", "数量"]
-            )
-            fig = px.bar(src_df, x="数量", y="数据源", orientation="h", color="数量",
-                         color_continuous_scale="Greens")
-            fig.update_layout(showlegend=False, height=300)
-            st.plotly_chart(fig, use_container_width=True)
-
     # 热点关键词
-    with col_kw:
-        st.subheader("热点关键词 TOP 15")
-        if report["hot_keywords"]:
-            kw_df = pd.DataFrame(
-                report["hot_keywords"][:15], columns=["关键词", "频次"]
-            )
-            fig = px.bar(kw_df, x="频次", y="关键词", orientation="h", color="频次",
-                         color_continuous_scale="Oranges")
-            fig.update_layout(showlegend=False, height=300, yaxis=dict(autorange="reversed"))
-            st.plotly_chart(fig, use_container_width=True)
+    st.subheader("热点关键词 TOP 15")
+    if report["hot_keywords"]:
+        kw_df = pd.DataFrame(
+            report["hot_keywords"][:15], columns=["关键词", "频次"]
+        )
+        fig = px.bar(kw_df, x="频次", y="关键词", orientation="h", color="频次",
+                     color_continuous_scale="Oranges")
+        fig.update_layout(showlegend=False, height=300, yaxis=dict(autorange="reversed"))
+        st.plotly_chart(fig, use_container_width=True)
 
-    # === Token 用量 ===
+    # === 最新高价值动态 ===
     st.divider()
-    st.subheader("LLM Token 用量")
-    repo = get_repo()
-    today_usage = repo.get_token_usage_today()
-    total_usage = repo.get_token_usage_total()
-
-    col_t1, col_t2 = st.columns(2)
-    with col_t1:
-        st.metric("历史累计", f"{total_usage:,} tokens")
-    with col_t2:
-        today_total = sum(v for k, v in today_usage.items() if "_" not in k)
-        st.metric("今日用量", f"{today_total:,} tokens")
+    st.subheader("💡 最新高价值动态 (白皮书可用素材)")
+    if report.get("latest_articles"):
+        df_latest = pd.DataFrame(report["latest_articles"])
+        st.dataframe(
+            df_latest,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "链接": st.column_config.LinkColumn("原文链接"),
+                "摘要": st.column_config.TextColumn("摘要", width="large")
+            }
+        )
+    else:
+        st.info("暂无最新动态")
 
     # 页脚
     st.divider()

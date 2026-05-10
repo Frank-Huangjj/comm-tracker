@@ -72,6 +72,16 @@ class TrendAnalyzer:
         ).one()
         change_pct = ((total - prev_total) / prev_total * 100) if prev_total > 0 else 0
 
+        # 字典映射：分类的中文名称
+        CATEGORY_ZH = {
+            "product_release": "产品发布",
+            "tech_dynamic": "技术动态",
+            "market_finance": "市场财务",
+            "industry_news": "行业新闻",
+            "patent_filing": "专利布局",
+            "standard_contribution": "标准贡献",
+        }
+
         # 3. 分类分布
         category_rows = self.session.exec(
             select(Article.category, func.count(Article.id))
@@ -80,8 +90,22 @@ class TrendAnalyzer:
             .order_by(func.count(Article.id).desc())
         ).all()
         categories = {
-            (cat.value if hasattr(cat, "value") else str(cat)): cnt
+            CATEGORY_ZH.get(cat.value if hasattr(cat, "value") else str(cat), str(cat)): cnt
             for cat, cnt in category_rows
+        }
+
+        # 字典映射：厂家的简称
+        MFR_SHORT_NAMES = {
+            "华为技术有限公司": "华为",
+            "中兴通讯股份有限公司": "中兴",
+            "爱立信（中国）通信有限公司": "爱立信",
+            "诺基亚通信系统（北京）有限公司": "诺基亚",
+            "三星电子株式会社": "三星",
+            "中国移动通信集团有限公司": "中国移动",
+            "中国电信集团有限公司": "中国电信",
+            "中国联合网络通信集团有限公司": "中国联通",
+            "全球移动通信系统协会": "GSMA",
+            "电信管理论坛": "TM Forum",
         }
 
         # 4. 厂家活跃度
@@ -92,7 +116,7 @@ class TrendAnalyzer:
             .group_by(Manufacturer.name_zh)
             .order_by(func.count(Article.id).desc())
         ).all()
-        manufacturers = {name: cnt for name, cnt in mfr_rows}
+        manufacturers = {MFR_SHORT_NAMES.get(name, name): cnt for name, cnt in mfr_rows}
 
         # 5. 数据源分布
         source_rows = self.session.exec(
@@ -112,12 +136,12 @@ class TrendAnalyzer:
         ).all()
         daily_trend = {str(day): cnt for day, cnt in daily_rows}
 
-        # 7. 热点标题关键词
-        articles = self.session.exec(
-            select(Article.title)
+        # 7. 热点关键词 (结合标题与摘要，使用白皮书专业词库)
+        articles_data = self.session.exec(
+            select(Article.title, Article.summary)
             .where(Article.collected_at >= start_date, Article.collected_at <= end_date)
         ).all()
-        hot_keywords = self._extract_hot_keywords(articles)
+        hot_keywords = self._extract_hot_keywords(articles_data)
 
         # 8. 摘要覆盖率
         with_summary = self.session.exec(
@@ -128,6 +152,32 @@ class TrendAnalyzer:
                 Article.summary.is_not(None),
             )
         ).one()
+
+        # 9. 最新高价值动态 (白皮书可用素材)
+        latest_rows = self.session.exec(
+            select(Article, Manufacturer.name_zh)
+            .outerjoin(Manufacturer, Article.manufacturer_id == Manufacturer.id)
+            .where(
+                Article.collected_at >= start_date, 
+                Article.collected_at <= end_date,
+                Article.summary.is_not(None),
+                Article.summary != ''
+            )
+            .order_by(Article.published_at.desc(), Article.collected_at.desc())
+            .limit(20)
+        ).all()
+        
+        latest_articles = [
+            {
+                "发布时间": art.published_at.strftime("%Y-%m-%d") if art.published_at else art.collected_at.strftime("%Y-%m-%d"),
+                "厂家": MFR_SHORT_NAMES.get(mfr_name, mfr_name) if mfr_name else "未知",
+                "标题": art.title,
+                "分类": CATEGORY_ZH.get(art.category.value if hasattr(art.category, "value") else str(art.category), "未知") if art.category else "未知",
+                "摘要": art.summary or "",
+                "链接": art.original_url
+            }
+            for art, mfr_name in latest_rows
+        ]
 
         report = {
             "period": period,
@@ -144,6 +194,7 @@ class TrendAnalyzer:
             "sources": sources,
             "daily_trend": daily_trend,
             "hot_keywords": hot_keywords,
+            "latest_articles": latest_articles,
         }
 
         logger.info(
@@ -155,24 +206,24 @@ class TrendAnalyzer:
 
         return report
 
-    def _extract_hot_keywords(self, titles: list[str], top_n: int = 20) -> list[tuple[str, int]]:
-        """从标题中提取热点关键词。"""
-        import jieba
-
-        # 通信行业相关停用词
-        stopwords = {
-            "的", "了", "在", "是", "和", "与", "为", "中", "等", "将",
-            "将", "被", "以", "从", "对", "上", "下", "有", "其", "到",
-            "也", "可", "年", "月", "日", "新", "最", "不", "一", "大",
+    def _extract_hot_keywords(self, data: list[tuple[str, str]], top_n: int = 15) -> list[tuple[str, int]]:
+        """基于白皮书专属词库，从标题和摘要中精准提取核心技术词汇。"""
+        # 白皮书强相关的核心技术与行业热词
+        domain_keywords = {
+            "自智网络", "智能体", "大模型", "算力", "智算", "数智化",
+            "5G-A", "6G", "全光网", "数字孪生", "算网融合",
+            "人工智能", "AI", "通感一体", "星地融合", "卫星通信",
+            "边缘计算", "低空经济", "网络智能化", "算力网络",
+            "AIDC", "Token", "内生智能", "云原生", "物联网",
+            "数字化转型", "意图驱动", "绿色低碳", "专网", "大语言模型"
         }
 
         counter = Counter()
-        for title in titles:
-            words = jieba.cut(title)
-            for w in words:
-                w = w.strip()
-                if len(w) >= 2 and w not in stopwords:
-                    counter[w] += 1
+        for title, summary in data:
+            text = ((title or "") + " " + (summary or "")).lower()
+            for kw in domain_keywords:
+                if kw.lower() in text:
+                    counter[kw] += 1
 
         return counter.most_common(top_n)
 
