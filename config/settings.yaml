@@ -1,0 +1,30 @@
+# 全局配置
+
+database:
+  url: "sqlite:///data/db/comm_tracker.db"
+
+rate_limit:
+  default_rate: 0.5        # 每秒请求数
+  default_burst: 3         # 突发上限
+  per_source:
+    huawei_news: { rate: 0.3, burst: 2 }
+    c114_news: { rate: 0.3, burst: 2 }
+
+llm:
+  provider: deepseek
+  base_url: "https://api.deepseek.com/v1"
+  model: "deepseek-chat"
+  max_daily_tokens: 100000
+
+logging:
+  level: INFO
+  format: "%(asctime)s [%(name)s] %(levelname)s: %(message)s"
+  file: "data/app.log"
+
+schedule:
+  official_news: "interval:4h"
+  industry_news: "interval:2h"
+  social_media: "interval:6h"
+  patent_scan: "cron:0 2 * * *"
+  finance_check: "cron:0 9 * * 1"
+  weekly_report: "cron:0 18 * * 5"

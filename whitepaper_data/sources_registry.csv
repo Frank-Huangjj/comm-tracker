@@ -1,0 +1,14 @@
+数据标识,文件路径,发布机构,原始出处,收录时间,备注
+图2-1 中国数字经济规模,tables/digital_economy_gdp.csv,中国信通院,《中国数字经济发展研究报告（2025年）》,2026-05-10,待补充具体URL
+图2-2 全球数字化转型支出,tables/global_digital_transformation.csv,IDC/中国信通院,《全球数字经济发展研究报告（2024年）》,2026-05-10,待补充具体URL
+图2-3 2019年技术发展曲线,tables/gartner_2019.csv,Gartner,Hype Cycle for Artificial Intelligence (Sep 2019),2026-05-10,待补充具体URL
+图2-4 2024年技术发展曲线,tables/gartner_2024.csv,Gartner,Hype Cycle for Emerging Technologies (Aug 2024),2026-05-10,待补充具体URL
+图2-5 人工智能产业规模,tables/ai_industry_scale.csv,艾瑞咨询,《2024年中国人工智能产业研究报告》,2026-05-10,待补充具体URL
+图3-1 电信业务收入增速,tables/telecom_revenue_growth.csv,工信部,《2025年通信业统计公报》,2026-05-10,待补充具体URL
+图3-2 云服务收入增速,tables/cloud_revenue_growth.csv,三大运营商,三大运营商各年年报,2026-05-10,待补充具体URL
+图3-3 移动电话基站发展情况,tables/base_station_stats.csv,工信部,《2025年通信业统计公报》,2026-05-10,待补充具体URL
+表4-1 AgentOps等级,tables/agentops_levels.csv,TM Forum,IG1392 Autonomous Networks Levels Whitepaper v2.0.0,2026-05-10,待补充具体URL
+中国移动动态,trends/china_mobile.md,中国移动,九天大模型3.0发布会/WAIC 2025/年报,2026-05-10,后续可由此系统自动同步出处
+中国电信动态,trends/china_telecom.md,中国电信,天翼AI开放平台公告/年报,2026-05-10,后续可由此系统自动同步出处
+中国联通动态,trends/china_unicom.md,中国联通,元景大模型MaaS平台公告/年报,2026-05-10,后续可由此系统自动同步出处
+海外运营商动态,trends/global_operators.md,各大运营商,GSMA / 各大运营商官网,2026-05-10,后续可由此系统自动同步出处

@@ -1,0 +1,37 @@
+# 厂家定义
+
+manufacturers:
+  - short_code: huawei
+    name_zh: "华为技术有限公司"
+    name_en: "Huawei Technologies"
+    stock_codes: []
+    official_url: "https://www.huawei.com"
+    news_url: "https://www.huawei.com/cn/news"
+
+  - short_code: zte
+    name_zh: "中兴通讯股份有限公司"
+    name_en: "ZTE Corporation"
+    stock_codes: ["000063.SZ", "0763.HK"]
+    official_url: "https://www.zte.com.cn"
+    news_url: "https://www.zte.com.cn/china/about/news.html"
+
+  - short_code: ericsson
+    name_zh: "爱立信（中国）通信有限公司"
+    name_en: "Ericsson"
+    stock_codes: ["ERIC.O", "ERICb.ST"]
+    official_url: "https://www.ericsson.com"
+    news_url: "https://www.ericsson.com/en/press-releases"
+
+  - short_code: nokia
+    name_zh: "诺基亚通信系统（北京）有限公司"
+    name_en: "Nokia"
+    stock_codes: ["NOK", "NOKIA.HE"]
+    official_url: "https://www.nokia.com"
+    news_url: "https://www.nokia.com/about-us/newsroom/"
+
+  - short_code: samsung
+    name_zh: "三星电子株式会社"
+    name_en: "Samsung Electronics"
+    stock_codes: ["005930.KS"]
+    official_url: "https://www.samsung.com"
+    news_url: "https://news.samsung.com"

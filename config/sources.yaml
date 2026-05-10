@@ -1,0 +1,75 @@
+# 数据源配置
+
+sources:
+  # === 官网 ===
+  - name: huawei_news
+    type: official
+    collector_class: HuaweiNewsCollector
+    manufacturers: [huawei]
+    enabled: true
+
+  - name: zte_news
+    type: official
+    collector_class: ZTENewsCollector
+    manufacturers: [zte]
+    enabled: true
+
+  - name: ericsson_news
+    type: official
+    collector_class: EricssonNewsCollector
+    manufacturers: [ericsson]
+    enabled: true
+
+  - name: nokia_news
+    type: official
+    collector_class: NokiaNewsCollector
+    manufacturers: [nokia]
+    enabled: true
+
+  - name: samsung_news
+    type: official
+    collector_class: SamsungNewsCollector
+    manufacturers: [samsung]
+    enabled: true
+
+  # === 行业媒体 ===
+  - name: c114_news
+    type: news
+    collector_class: C114NewsCollector
+    manufacturers: [huawei, zte, ericsson, nokia, samsung]
+    enabled: true
+    config:
+      base_url: "https://www.c114.com.cn/news"
+
+  - name: c114_bbs
+    type: news
+    collector_class: C114BBSCollector
+    manufacturers: [huawei, zte, ericsson, nokia, samsung]
+    enabled: false
+    config:
+      base_url: "https://bbs.c114.net"
+
+  # === 社交平台 ===
+  - name: wechat_sogou
+    type: social
+    collector_class: WeChatSogouCollector
+    manufacturers: [huawei, zte, ericsson, nokia, samsung]
+    enabled: false
+    config:
+      search_url: "https://weixin.sogou.com"
+
+  # === 专利 ===
+  - name: cnipa_patent
+    type: patent
+    collector_class: CNIPACollector
+    manufacturers: [huawei, zte, ericsson, nokia, samsung]
+    enabled: false
+
+  # === 财务 ===
+  - name: cninfo_finance
+    type: finance
+    collector_class: CninfoCollector
+    manufacturers: [zte]
+    enabled: false
+    config:
+      base_url: "https://webapi.cninfo.com.cn"

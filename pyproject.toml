@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "comm-tracker"
+version = "0.1.0"
+description = "通信设备厂家进展跟踪数据采集工具"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+dependencies = [
+    "httpx[http2]>=0.27",
+    "playwright>=1.40",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.0",
+    "sqlmodel>=0.0.22",
+    "alembic>=1.13",
+    "apscheduler>=3.10,<4.0",
+    "typer>=0.9",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "pyyaml>=6.0",
+    "jieba>=0.42",
+    "datasketch>=1.6",
+    "simhash>=2.1",
+    "python-dateutil>=2.8",
+    "pdfplumber>=0.10",
+    "openai>=1.0",
+    "openpyxl>=3.1",
+    "jinja2>=3.1",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "vcrpy>=6.0",
+    "ruff>=0.4",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+comm-tracker = "comm_tracker.cli:app"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
