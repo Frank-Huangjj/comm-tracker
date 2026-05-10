@@ -12,3 +12,6 @@ data/cache/
 .mypy_cache/
 .pytest_cache/
 .vcr/
+
+# 个人编写的敏感或大篇幅文档，不上传至代码仓库
+未来网络演进白皮书-数智分册R4.0.md
